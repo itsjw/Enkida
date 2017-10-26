@@ -1,117 +1,73 @@
-# Enkida
-She looks up random things on the internet.
+# 🌟 Starbot
 
-(from Node Library for the Slack APIs - https://github.com/slackapi/node-slack-sdk)
+![Starbot](https://heroku-www-files.s3.amazonaws.com/starbot/starbot-banner.png)
 
-[![Build Status](https://travis-ci.org/slackapi/node-slack-sdk.svg?branch=master)](https://travis-ci.org/slackapi/node-slack-sdk)
-[![codecov](https://codecov.io/gh/slackapi/node-slack-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/slackapi/node-slack-sdk)
-[![npm (scoped)](https://img.shields.io/npm/v/@slack/client.svg)](https://www.npmjs.com/package/@slack/client)
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
-Read the [full documentation](https://slackapi.github.io/node-slack-sdk) for all the lovely details.
+Starbot is [GitHub's trending open-source](https://github.com/trending/) page, reincarnated as a Slack bot. It is also the sample referenced in the ["How to Deploy Your Slack Bots to Heroku"](https://blog.heroku.com/archives/2016/3/9/how-to-deploy-your-slack-bots-to-heroku) blog post.
 
-This module is a wrapper around the Slack [RTM](https://api.slack.com/rtm) and [Web](https://api.slack.com/web) APIs.
 
-It will help you build on the Slack platform, from dropping notifications in channels to developing fully interactive bots. It provides the low level functionality you need to build reliable apps and projects on top of Slack's APIs.
-It:
+### Supported `/slash` commands
 
- - handles reconnection logic and request retries
- - provides reasonable defaults for events and logging
- - defines a basic model layer and data-store for caching Slack RTM API responses
+Create a `/starbot` [custom slash command](https://api.slack.com/slash-commands), using the URL: `{app-name}.herokuapp.com/commands/starbot`. *Take note of the provided `token`, this is used to verify requests come from Slack.*
 
-This module does not attempt to provide application level support, _e.g._ regex matching and filtering of the
-conversation stream.
+- `/starbot` or `/starbot help` - List available commands
+- `/starbot repos` - Display trending GitHub projects
 
-Most Slack apps are interested in posting messages into Slack channels, and generally working with our [Web API](https://api.slack.com/web). Read on
-to learn how to use `node-slack-sdk` to accomplish these tasks. Bots, on the other hand, are a bit more complex,
-so we have them covered in [Building Bots](https://slackapi.github.io/node-slack-sdk/bots).
+### Install
 
-# Installation
-Once you have a working Node.js project, you can install the Slack Developer Kit as a dependency via npm:
-
-```sh
-$ npm install @slack/client --save
+```shell
+$ npm install
 ```
 
-# Some Examples
+### Copy `.env-example` to `.env`
 
-All of these examples assume that you have set up a Slack [app](https://api.slack.com/slack-apps) or
-[custom integration](https://api.slack.com/custom-integrations), and understand the basic mechanics of working with the
-Slack Platform.
-
-## Posting a message with Incoming Webhooks
-
-[Incoming webhooks](https://api.slack.com/incoming-webhooks) are an easy way to get notifications posted into Slack with
-a minimum of setup. You'll need to either have a custom incoming webhook set up, or an app with an incoming webhook
-added to it.
-
-```js
-var IncomingWebhook = require('@slack/client').IncomingWebhook;
-
-var url = process.env.SLACK_WEBHOOK_URL || '';
-
-var webhook = new IncomingWebhook(url);
-
-webhook.send('Hello there', function(err, header, statusCode, body) {
-  if (err) {
-    console.log('Error:', err);
-  } else {
-    console.log('Received', statusCode, 'from Slack');
-  }
-});
+```shell
+$ cp .env-example .env
 ```
 
-## Posting a message with Web API
+### Configure
 
-You'll need a Web API token to call any of the Slack Web API methods. For custom integrations, you'll get this
-[from the token generator](https://api.slack.com/docs/oauth-test-tokens), and for apps it will come as the final part
-of the [OAuth dance](https://api.slack.com/docs/oauth).
+```shell
+SLACK_TEAM_TOKEN=xoxb...8WRqKWx
+NODE_ENV=development
+PORT=3000
+```
+### Run
 
-Your app will interact with the Web API through the `WebClient` object, which requires an access token to operate.
+```shell
+$ npm start
 
-```js
-var WebClient = require('@slack/client').WebClient;
-
-var token = process.env.SLACK_API_TOKEN || '';
-
-var web = new WebClient(token);
-web.chat.postMessage('C1232456', 'Hello there', function(err, res) {
-  if (err) {
-    console.log('Error:', err);
-  } else {
-    console.log('Message sent: ', res);
-  }
-});
+🚀 Starbot LIVES on PORT 3000 🚀
 ```
 
-## Posting a message with the Real-Time Messaging API
+Visit [localhost:3000](http://localhost:3000).
 
-Starting a bot up requires a bot token (bot tokens start with `xoxb-`),
-which can be had either creating a [custom bot](https://my.slack.com/apps/A0F7YS25R-bots) or by creating an app with a
-bot user, at the end of the [OAuth dance](https://api.slack.com/docs/oauth). If you aren't sure path is right for you,
-have a look at the [Bot Users documentation](https://api.slack.com/bot-users).
+### Deploy
 
-```js
-var RtmClient = require('@slack/client').RtmClient;
-var CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-var bot_token = process.env.SLACK_BOT_TOKEN || '';
+_Or with the [Heroku Toolbelt](https://toolbelt.heroku.com)_
 
-var rtm = new RtmClient(bot_token);
+```shell
+$ heroku create {optional-app-name}
 
-let channel;
+Creating app... done, stack is cedar-14
+https://blooming-scrubland-64464.herokuapp.com/
 
-// The client will emit an RTM.AUTHENTICATED event on successful connection, with the `rtm.start` payload
-rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
-  for (const c of rtmStartData.channels) {
-	  if (c.is_member && c.name ==='general') { channel = c.id }
-  }
-  console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
-});
+$ git push heroku master
+...
+remote: -----> Node.js app detected
+...
+remote:        https://blooming-scrubland-64464.herokuapp.com/ deployed to Heroku
+...
+To https://git.heroku.com/blooming-scrubland-64464.git
+ * [new branch]      master -> master
 
-// you need to wait for the client to fully connect before you can send messages
-rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
-  rtm.sendMessage("Hello!", channel);
-});
-
-rtm.start();
+$ heroku open
 ```
+
+### License
+
+**[This project is licensed under the terms of the MIT license.](http://license-me.herokuapp.com)**
+ -- [_Need your own? There's a button for that :wink:_](https://github.com/mattcreager/license)
