@@ -1,17 +1,43 @@
-var events = require('./lib/clients/events');
-var retryPolicies = require('./lib/clients/retry-policies');
+var hellobot = require('./hellobot');
+var express = require('express');
+var app = express();
 
-module.exports = {
-  WebClient: require('./lib/clients/web/client'),
-  RtmClient: require('./lib/clients/rtm/client'),
-  IncomingWebhook: require('./lib/clients/incoming-webhook/client'),
-  LegacyRtmClient: require('./lib/clients/default/legacy-rtm'),
-  MemoryDataStore: require('./lib/data-store/memory-data-store'),
-  CLIENT_EVENTS: {
-    WEB: events.CLIENT_EVENTS.WEB,
-    RTM: events.CLIENT_EVENTS.RTM
-  },
-  RTM_EVENTS: events.RTM_EVENTS,
-  RTM_MESSAGE_SUBTYPES: events.RTM_MESSAGE_SUBTYPES,
-  RETRY_POLICIES: retryPolicies
-};
+fruitbotwin = 0
+fruitbotloss = 0
+fruitbottie = 0
+
+app.post('/hello', hellobot);
+
+app.set('port', (process.env.PORT || 5000));
+
+app.use(express.static(__dirname + '/public'));
+
+// views is directory for all template files
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.get('/', function(request, response) {
+  response.render('pages/index');
+});
+
+app.get('/fruitbotwin', function(request, response) {
+  fruitbotwin++
+  response.json(fruitbotwin);
+});
+app.get('/fruitbotloss', function(request, response) {
+  fruitbotloss++
+  response.json(fruitbotloss);
+});
+app.get('/fruitbottie', function(request, response) {
+  fruitbottie++
+  response.json(fruitbottie);
+});
+app.get('/fruitbottotals', function(request, response) {
+  response.json([fruitbotwin,fruitbotloss,fruitbottie]);
+});
+
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
+

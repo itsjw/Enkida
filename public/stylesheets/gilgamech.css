@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<!--
+	html {
+    height: 100%;
+            }  
+    body {
+	background-color:#909090;
+	margin: 0px;
+	padding: 0px;
+	text-align:left;
+    }
+a:link {
+	color:#9ab945;
+}
+a:visited{
+	color: #777777;
+}
+a:active{
+	color: #777777;
+}
+canvas {
+	display: block;
+	margin: 0px auto;
+	border: 1px solid black;
+	
+}
+video{
+	display: block;
+	margin: 0px auto;
+	border: 1px solid black;
+	
+}
+pre {
+	text-align:left;
+}
+p.menu {
+	color: #7f7f7f;
+	margin:0;
+	padding:0;
+	border:0;
+	text-align:left;
+	background-color:#000;
+ 	position: fixed;
+    margin-top: 3.8em; 
+	width: 100%;
+	}
+nav {
+	color: #A3C7B2;
+	margin:0;
+	padding:0;
+	border:0;
+	text-align:left;
+	background-color:#000;
+ 	position: fixed;
+    margin-top: 3em;
+	width: 100%;
+	}
+div.content {
+	padding-top: 3em; /* top 5px plus height 30px */
+	/*padding-left: 3em; /* top 5px plus height 30px */
+	/* top | right | bottom | left */
+	margin: 2px 1em 0 5px;
+	}
+p.game {
+	text-align:center;
+	background-color:A3C7B2;
+	
+}
+
+p.banner {
+	text-align:center;
+}
+p.copyright {
+	font-weight:bold;
+	text-align:center;
+}
+h1 {
+
+}
+h2 {
+	font-variant: small-caps;
+	font-family: Verdana, Arial, Helveltica, sans-serif;
+	font-weight:bold;
+	font-size:4ex;
+	text-align:center;
+}
+div.game {
+	text-align:center;
+
+}
+
+div.top {
+	top:0;
+	margin:0;
+	padding:0;
+	border:1px solid #303030;
+	background-color:#303030;
+	color:#010101;
+	font-variant: small-caps;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	text-align:left;
+ 	font-size: 7ex;
+	position: fixed;
+	width: 100%;
+}
+div.top a:link{
+	text-decoration:none;
+	color:#000;
+}
+div.top a:visited {
+
+	color:#000;
+}
+html,body {
+    margin:-10;
+}
+-->
