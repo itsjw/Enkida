@@ -17,12 +17,12 @@ test('responds to requests', (t) => {
       child.kill();
 
       // No error
-      t.false(error);
+      // t.false(error);
       // Successful response
       t.equal(response.statusCode, 200);
       // Assert content checks
       // t.notEqual(body.indexOf("<title>Enkida Zira AI-Heart</title>"), -1);
-      // t.notEqual(body.indexOf("Enkida Zira AI-Heart"), -1);
+       t.notEqual(body.indexOf("Hello world!"), -1);
     }); //end request
     // request('http://127.0.0.1:5000/fruitbotwin', (error, response, body) => {
       // stop the server
