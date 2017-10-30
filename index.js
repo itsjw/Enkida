@@ -1,3 +1,4 @@
+var dicebot = require('./dicebot');
 var hellobot = require('./hellobot');
 var express = require('express');
 var app = express();
@@ -7,6 +8,7 @@ fruitbotloss = 0
 fruitbottie = 0
 
 app.post('/hello', hellobot);
+app.post('/roll', dicebot);
 
 app.set('port', (process.env.PORT || 5000));
 
