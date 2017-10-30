@@ -7,7 +7,7 @@ const env = Object.assign({}, process.env, {PORT: 5000});
 const child = spawn('node', ['index.js'], {env});
 
 test('responds to requests', (t) => {
-  t.plan(7);
+  t.plan(2);
 
   // Wait until the server is ready
   child.stdout.on('data', _ => {
