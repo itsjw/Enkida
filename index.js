@@ -7,7 +7,7 @@ var events = require('./lib/clients/events');
 var retryPolicies = require('./lib/clients/retry-policies');
 
 var app = express();
- var port = process.env.PORT || 3000;
+app.set('port', (process.env.PORT || 3000));
 
 module.exports = {
   WebClient: require('./lib/clients/web/client'),
@@ -47,6 +47,6 @@ app.use(function (err, req, res) {
   res.status(400).send(err.message);
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
 });
