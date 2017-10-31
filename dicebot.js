@@ -1,7 +1,7 @@
 var request = require('request');
-var IncomingWebhook = require('@slack/client').IncomingWebhook;
-var currentRoll = roll(1, die);
-var i = 0
+// var IncomingWebhook = require('@slack/client').IncomingWebhook;
+var currentRoll = 0;
+var i = 0;
 
 var url = process.env.SLACK_WEBHOOK_URL || '';
 // var wh = new IncomingWebhook(url);
@@ -16,7 +16,6 @@ function roll(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-
 function send(payload, callback) {
   var path = process.env.INCOMING_WEBHOOK_PATH;
   // var uri = 'https://hooks.slack.com/services' + path;
@@ -28,9 +27,9 @@ function send(payload, callback) {
   }, function (error, response, body) {
     if (error) {
       return callback(error);
-    }
-    return 1
+    };
     callback(null, response.statusCode, body);
+    return 1;
   });
 }
 
@@ -42,6 +41,8 @@ module.exports = function (req, res, next) {
   var rolls = [];
   var total = 0;
   var botPayload = {};
+
+  currentRoll = roll(1, die);
 
   if (req.body.text) {
     // parse roll type if specified
@@ -57,13 +58,13 @@ module.exports = function (req, res, next) {
   }
 
   // roll dice and sum
-  for ( i = 0; i < times; i++) {
+  for (i = 0; i < times; i++) {
     rolls.push(currentRoll);
     total += currentRoll;
   }
 
   // write response message and add to payload
-  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + 
+  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' +
 							die + ':\n' + rolls.join(' + ') + ' = *' + total + '*';
   botPayload.username = 'dicebot';
   botPayload.channel = req.body.channel_id;
@@ -80,5 +81,5 @@ module.exports = function (req, res, next) {
     return res.status(200).end();
     // }
   });
-  return 1
+  return 1;
 };
