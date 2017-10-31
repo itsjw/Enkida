@@ -31,7 +31,7 @@ module.exports = function (req, res, next) {
   }
 
   // write response message and add to payload
-  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + die + ':\n' +
+  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + die + ':\n' + rolls.join(' + ') + ' = *' + total + '*';
   botPayload.username = 'dicebot';
   botPayload.channel = req.body.channel_id;
   botPayload.icon_emoji = ':game_die:';
