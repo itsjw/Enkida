@@ -1,13 +1,15 @@
 var request = require('request');
 var IncomingWebhook = require('@slack/client').IncomingWebhook;
+var currentRoll = roll(1, die);
+var i = 0
 
 var url = process.env.SLACK_WEBHOOK_URL || '';
-var wh = new IncomingWebhook(url);
-var whWithDefaults = new IncomingWebhook(url, {
-  username: 'enkida',
-  iconEmoji: ':slack:',
-  channel: 'general'
-});
+// var wh = new IncomingWebhook(url);
+// var whWithDefaults = new IncomingWebhook(url, {
+//   username: 'enkida',
+//   iconEmoji: ':slack:',
+//   channel: 'general'
+// });
 
 
 function roll(min, max) {
@@ -17,7 +19,7 @@ function roll(min, max) {
 
 function send(payload, callback) {
   var path = process.env.INCOMING_WEBHOOK_PATH;
-  //var uri = 'https://hooks.slack.com/services' + path;
+  // var uri = 'https://hooks.slack.com/services' + path;
 
   request({
     uri: path,
@@ -27,7 +29,7 @@ function send(payload, callback) {
     if (error) {
       return callback(error);
     }
-
+    return 1
     callback(null, response.statusCode, body);
   });
 }
@@ -55,14 +57,13 @@ module.exports = function (req, res, next) {
   }
 
   // roll dice and sum
-  for (var i = 0; i < times; i++) {
-    var currentRoll = roll(1, die);
+  for ( i = 0; i < times; i++) {
     rolls.push(currentRoll);
     total += currentRoll;
   }
 
   // write response message and add to payload
-  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + _
+  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + 
 							die + ':\n' + rolls.join(' + ') + ' = *' + total + '*';
   botPayload.username = 'dicebot';
   botPayload.channel = req.body.channel_id;
@@ -79,4 +80,5 @@ module.exports = function (req, res, next) {
     return res.status(200).end();
     // }
   });
+  return 1
 };
