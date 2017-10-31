@@ -1,6 +1,15 @@
 var request = require('request');
 var IncomingWebhook = require('@slack/client').IncomingWebhook;
 
+var url = process.env.SLACK_WEBHOOK_URL || '';
+var wh = new IncomingWebhook(url);
+var whWithDefaults = new IncomingWebhook(url, {
+  username: 'enkida',
+  iconEmoji: ':slack:',
+  channel: 'general'
+});
+
+
 module.exports = function (req, res, next) {
   // default roll is 2d6
   var matches;
@@ -76,21 +85,12 @@ function send (payload, callback) {
 }
 
 
-
-var url = process.env.SLACK_WEBHOOK_URL || '';
-var wh = new IncomingWebhook(url);
-var whWithDefaults = new IncomingWebhook(url, {
-  username: 'My custom username',
-  iconEmoji: ':slack:',
-  channel: 'my-custom-channel'
-});
-
 wh.send('Some text');
 
 whWithDefaults.send({
   text: 'Some text',
   iconEmoji: ':robot_face:',
-  channel: 'custom-channel',
+  channel: 'general',
   linkNames: '1',
   attachments: [
     // attachment data
@@ -98,8 +98,6 @@ whWithDefaults.send({
   ]
 });
 
-wh.send('Some text', function onSendEnd() {
-  console.log('Finished sending');
-});
-
-
+// wh.send('Some text', function onSendEnd() {
+  // console.log('Finished sending');
+// });

@@ -1,9 +1,9 @@
 
-module.exports = function (req, res, next) {
+module.exports = function hellobot (req, res) {
   var userName = req.body.user_name;
   var botPayload = {
-    text : 'Hello, ' + userName + '!'
-  }
+    text: 'Hello, ' + userName + '!'
+  };
 
   // avoid infinite loop
   if (userName !== 'slackbot') {
@@ -11,7 +11,7 @@ module.exports = function (req, res, next) {
   } else {
     return res.status(200).end();
   }
-}
+};
 
 
 
