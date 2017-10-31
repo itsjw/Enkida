@@ -17,17 +17,16 @@ function roll(min, max) {
 }
 
 function send(payload, callback) {
-  var path = process.env.INCOMING_WEBHOOK_PATH;
   // var uri = 'https://hooks.slack.com/services' + path;
 
   request({
-    uri: path,
+    uri: url,
     method: 'POST',
     body: JSON.stringify(payload)
   }, function (error, response, body) {
     if (error) {
       return callback(error);
-    };
+    }
     callback(null, response.statusCode, body);
     return 1;
   });
