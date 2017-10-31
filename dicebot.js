@@ -10,6 +10,28 @@ var whWithDefaults = new IncomingWebhook(url, {
 });
 
 
+function roll(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+
+function send(payload, callback) {
+  var path = process.env.INCOMING_WEBHOOK_PATH;
+  //var uri = 'https://hooks.slack.com/services' + path;
+
+  request({
+    uri: path,
+    method: 'POST',
+    body: JSON.stringify(payload)
+  }, function (error, response, body) {
+    if (error) {
+      return callback(error);
+    }
+
+    callback(null, response.statusCode, body);
+  });
+}
+
 module.exports = function (req, res, next) {
   // default roll is 2d6
   var matches;
@@ -40,7 +62,8 @@ module.exports = function (req, res, next) {
   }
 
   // write response message and add to payload
-  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + die + ':\n' + rolls.join(' + ') + ' = *' + total + '*';
+  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + _
+							die + ':\n' + rolls.join(' + ') + ' = *' + total + '*';
   botPayload.username = 'dicebot';
   botPayload.channel = req.body.channel_id;
   botPayload.icon_emoji = ':game_die:';
@@ -53,47 +76,7 @@ module.exports = function (req, res, next) {
       // inform user that our Incoming WebHook failed
       return next(new Error('Incoming WebHook: ' + status + ' ' + body));
     } // else {
-      return res.status(200).end();
+    return res.status(200).end();
     // }
-});
-}
-
-function roll (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-
-function send (payload, callback) {
-  var path = process.env.INCOMING_WEBHOOK_PATH;
-  //var uri = 'https://hooks.slack.com/services' + path;
-
-  request({
-    uri: path,
-    method: 'POST',
-    body: JSON.stringify(payload)
-  }, function (error, response, body) {
-    if (error) {
-      return callback(error);
-    }
-
-    callback(null, response.statusCode, body);
   });
-}
-
-
-wh.send('Some text');
-
-whWithDefaults.send({
-  text: 'Some text',
-  iconEmoji: ':robot_face:',
-  channel: 'general',
-  linkNames: '1',
-  attachments: [
-    // attachment data
-    // see https://api.slack.com/docs/attachments
-  ]
-});
-
-// wh.send('Some text', function onSendEnd() {
-  // console.log('Finished sending');
-// });
+};
