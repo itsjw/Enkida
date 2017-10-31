@@ -7,7 +7,7 @@ var events = require('./lib/clients/events');
 var retryPolicies = require('./lib/clients/retry-policies');
 
 var app = express();
-var port = process.env.PORT || 3000;
+// var port = process.env.PORT || 3000;
 
 module.exports = {
   WebClient: require('./lib/clients/web/client'),
@@ -30,7 +30,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // test route
-app.get('/', function (req, res) { res.status(200).send('Hello world!') });
+app.get('/', function (req, res) { 
+	res.status(200).send('Hello world!');
+});
 
 // hellobot
 app.post('/hello', hellobot);
@@ -44,5 +46,3 @@ app.use(function (err, req, res) {
   // console.error(err.stack);
   res.status(400).send(err.message);
 });
-
-

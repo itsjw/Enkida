@@ -26,7 +26,6 @@ module.exports = function (req, res, next) {
     if (matches && matches[1] && matches[2]) {
       times = matches[1];
       die = matches[2];
-
     } else {
       // send error message back to user if input is bad
       return res.status(200).send('<number>d<sides>');
@@ -55,7 +54,7 @@ module.exports = function (req, res, next) {
       // inform user that our Incoming WebHook failed
       return next(new Error('Incoming WebHook: ' + status + ' ' + body));
 
-    } else {
+    } // else {
       return res.status(200).end();
     }
   });
