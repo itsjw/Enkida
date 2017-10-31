@@ -54,9 +54,9 @@ module.exports = function (req, res, next) {
       return next(new Error('Incoming WebHook: ' + status + ' ' + body));
     } // else {
       return res.status(200).end();
-    }
+    // }
 });
-
+}
 
 function roll (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
