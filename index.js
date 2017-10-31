@@ -30,8 +30,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // test route
-app.get('/', function (req, res) { 
-	res.status(200).send('Hello world!');
+app.get('/', function (req, res) {
+  res.status(200).send('Hello world!');
 });
 
 // hellobot

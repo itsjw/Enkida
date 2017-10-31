@@ -9,9 +9,6 @@ module.exports = function hellobot(req, res) {
   if (userName !== 'slackbot') {
     return res.status(200).json(botPayload);
   } // else {
-    return res.status(200).end();
+  return res.status(200).end();
   // }
 };
-
-
-
