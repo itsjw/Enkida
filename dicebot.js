@@ -31,7 +31,7 @@ module.exports = function (req, res, next) {
   }
 
   // write response message and add to payload
-  botPayload.text = 'I\'m rollin!';
+  botPayload.text = 'Im rollin!';
 
   botPayload.username = 'dicebot';
   botPayload.channel = req.body.channel_id;
@@ -97,7 +97,6 @@ function send (payload, callback) {
 
 function postToSlack (payload, callback) {
   var token = process.env.SLACK_API_TOKEN // Get-Content -Path "PSScriptRoot\token.txt"
-  var path = process.env.INCOMING_WEBHOOK_PATH;
   var uri = 'https://slack.com/api/chat.postMessage'
   //var uri = 'https://hooks.slack.com/services' + path;
 
@@ -106,8 +105,8 @@ function postToSlack (payload, callback) {
 	token: token,
 	channel: 'general',
 	text: JSON.stringify(payload),
-	username = 'enkida',
-    method: 'POST'
+	username : 'enkida',
+	parse :'full'
   }, function (error, response, body) {
     if (error) {
       return callback(error);
