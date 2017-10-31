@@ -31,14 +31,32 @@ module.exports = function (req, res, next) {
   }
 
   // write response message and add to payload
-  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + die + ':\n' +
-                    rolls.join(' + ') + ' = *' + total + '*';
+  botPayload.text = 'Im rollin!';
 
   botPayload.username = 'dicebot';
   botPayload.channel = req.body.channel_id;
   botPayload.icon_emoji = ':game_die:';
 
   // send dice roll
+ postToSlack(botPayload, function (error, status, body) {
+    if (error) {
+      return next(error);
+
+    } else if (status !== 200) {
+      // inform user that our Incoming WebHook failed
+      return next(new Error('Incoming WebHook: ' + status + ' ' + body));
+
+    } else {
+      return res.status(200).end();
+    }
+  });
+
+  botPayload.text = req.body.user_name + ' rolled ' + times + 'd' + die + ':\n' +
+  botPayload.username = 'dicebot';
+  botPayload.channel = req.body.channel_id;
+  botPayload.icon_emoji = ':game_die:';
+
+
   send(botPayload, function (error, status, body) {
     if (error) {
       return next(error);
@@ -75,3 +93,27 @@ function send (payload, callback) {
     callback(null, response.statusCode, body);
   });
 }
+
+
+function postToSlack (payload, callback) {
+  var token = process.env.SLACK_API_TOKEN // Get-Content -Path "PSScriptRoot\token.txt"
+  var uri = 'https://slack.com/api/chat.postMessage'
+  //var uri = 'https://hooks.slack.com/services' + path;
+
+  request({
+    uri: uri,
+	token: token,
+	channel: 'general',
+	text: JSON.stringify(payload),
+	username : 'enkida',
+	parse :'full'
+  }, function (error, response, body) {
+    if (error) {
+      return callback(error);
+    }
+
+    callback(null, response.statusCode, body);
+  });
+}
+
+
